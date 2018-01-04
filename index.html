@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Daimler Truck </title>
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js
+"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+
+
+<style type="text/css">
+	.axis .domain {
+  display: none;
+}
+.hide {
+	display: none;
+}
+.show{
+	display: block
+}
+.d3, .tabl {
+	margin-top: 100px;
+}
+.h1-mg-bm {
+	margin-bottom: 20px;
+}
+.text-center {
+	margin-bottom: 20px;
+}
+body {
+	font: normal small-caps normal 16px/1.4 Georgia;
+}
+
+</style>
+</head>
+<body>
+	<div class="container">
+		<h1 class="text-center">Daimler Truck Manufacturing Plant</h1>
+				<h2 class="h1-mg-bm"> Role: Manager </h2>
+				<div class="col-md-6 col-md-offset-3 ">
+					<button class="d3js pure-button" >D3</button>
+				</div>
+				<div class="col-md-3 ">
+					<button class="tableau pure-button" >Tableau</button>
+				</div>
+				<div class = "d3 hide">
+					<svg width="960" height="500"></svg>
+				</div>
+				<div class="tabl hide">
+					<div class='tableauPlaceholder' id='viz1513053791550' style='position: relative'><noscript><a href='#'><img alt='Daimler Truck Visualization ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;It&#47;Item_Short_Analysis&#47;Manager&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Item_Short_Analysis&#47;Manager' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;It&#47;Item_Short_Analysis&#47;Manager&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                
+				</div>
+	</div>
+
+</body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".d3js").on("click", function(){
+			if($(".d3").hasClass("hide")){
+				if($(".tabl").hasClass("show")){
+					$(".tabl").removeClass("show");
+					$(".tabl").addClass("hide");
+				}
+				$(".d3").removeClass("hide");
+				$(".d3").addClass("show");
+			}else{
+				if($(".tabl").hasClass("show")){
+					$(".tabl").removeClass("show");
+					$(".tabl").addClass("hide");
+				}
+				$(".d3").removeClass("show");
+				$(".d3").addClass("hide");
+			}
+		});	
+		$(".tableau").on("click", function(){
+			if($(".tabl").hasClass("hide")){
+				if($(".d3").hasClass("show")){
+					$(".d3").removeClass("show");
+					$(".d3").addClass("hide");
+				}
+				$(".tabl").removeClass("hide");
+				$(".tabl").addClass("show");
+			}else{
+				if($(".d3").hasClass("show")){
+					$(".d3").removeClass("show");
+					$(".d3").addClass("hide");
+				}
+				$(".tabl").removeClass("show");
+				$(".tabl").addClass("hide");
+			}
+		});	
+	});
+	
+</script>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var x0 = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.1);
+
+var x1 = d3.scaleBand()
+    .padding(0.05);
+
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+var z = d3.scaleOrdinal()
+    .range(["#146626", "#f04242", "#daff22"]);
+	
+	<!-- "#6b486b", "#a05d56", "#d0743c", "#ff8c00"-->
+
+d3.csv("shop_calls.csv", function(d, i, columns) {
+console.log(columns.length);
+  for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  var keys = data.columns.slice(1);
+
+  x0.domain(data.map(function(d) { return d.Date; }));
+  x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+  y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+
+  g.append("g")
+    .selectAll("g")
+    .data(data)
+    .enter().append("g")
+      .attr("transform", function(d) { return "translate(" + x0(d.Date) + ",0)"; })
+    .selectAll("rect")
+    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+    .enter().append("rect")
+      .attr("x", function(d) { return x1(d.key); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", x1.bandwidth() + 3)
+      .attr("height", function(d) { return height - y(d.value); })
+      .attr("fill", function(d) { return z(d.key); });
+
+  g.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x0));
+
+  g.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(y).ticks(null, "s"))
+    .append("text")
+      .attr("x", 2)
+      .attr("y", y(y.ticks().pop()) + 0.5)
+      .attr("dy", "0.32em")
+      .attr("fill", "#000")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start")
+      .text("Count of Shop calls");
+
+  var legend = g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", z);
+
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+});
+
+</script>
+
+<script type='text/javascript'>                    var divElement = document.getElementById('viz1513053791550');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1216px';vizElement.style.height='991px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+
+</html>
